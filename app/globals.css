@@ -1,13 +1,14 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f5f5;
+  --foreground: #1f1f1f;
+  --muted: #6b6b6b;
+  --accent: #b68b1f;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
@@ -18,16 +19,10 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at center, #ffffff 0%, #E2E2E2 100%);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 a {
@@ -35,8 +30,270 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 24px 64px;
+  gap: 40px;
+}
+
+.hero {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kicker {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 16px;
+  color: #353030;
+}
+
+.names {
+  font-size: clamp(34px, 4vw, 48px);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  color: #353030;
+  font-family: var(--font-bodoni), "Times New Roman", serif;
+}
+
+.names-break {
+  display: none;
+}
+
+.pass-wrap {
+  width: min(1200px, 95vw);
+  height: clamp(340px, 55vw, 560px);
+  display: grid;
+  place-items: center;
+}
+
+.pass-mobile {
+  display: none;
+}
+
+.pass-desktop {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.pass-shell {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border-radius: 32px;
+  border: none;
+  overflow: visible;
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.divider {
+  width: min(880px, 92vw);
+  height: 1px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.footer-text {
+  color: #353030;
+  font-size: 15px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.footer-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  box-shadow: none;
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.footer-button-img {
+  width: 193px;
+  height: 53px;
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .footer-button:hover {
+    transform: translateY(-1px);
+    filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.18)) drop-shadow(0 0 18px rgba(182, 139, 31, 0.22));
+  }
+}
+
+.footer-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 40px 16px 48px;
+    gap: 32px;
+  }
+
+  .names {
+    font-size: clamp(28px, 6vw, 40px);
+  }
+
+  .pass-wrap {
+    height: clamp(320px, 60vw, 480px);
+  }
+}
+
+/* Tablet + small desktop: use the same layout as mobile (2D flip pass) */
+@media (max-width: 1024px) {
+  .names-break {
+    display: block;
+  }
+
+  .names {
+    line-height: 1.2;
+  }
+
+  .pass-wrap {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pass-desktop {
+    display: none;
+  }
+
+  .pass-mobile {
+    display: block;
+    width: min(420px, 80vw);
+  }
+}
+
+/* Mobile pass flip (shared styles, used on tablet too) */
+.m-pass {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.m-pass-card {
+  width: 100%;
+  perspective: 1200px;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  touch-action: pan-y;
+}
+
+.m-pass-card:focus-visible .m-pass-flip {
+  box-shadow: 0 0 0 3px rgba(182, 139, 31, 0.25), 0 18px 40px rgba(0, 0, 0, 0.14);
+}
+
+.m-pass-flip {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 343 / 554;
+  transform-style: preserve-3d;
+  transition: transform 820ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+}
+
+.m-pass-flip.is-flipped {
+  transform: translateZ(0) rotateY(180deg);
+}
+
+.m-pass-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  user-select: none;
+}
+
+.m-pass-back {
+  transform: rotateY(180deg);
+}
+
+.m-pass-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.m-pass-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  outline: none;
+  display: grid;
+  place-items: center;
+}
+
+.m-pass-arrow img {
+  width: 48px;
+  height: 48px;
+  display: block;
+}
+
+.m-pass-arrow-right {
+  transform: rotate(180deg);
+}
+
+.m-pass-arrow:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 425px) {
+  .page {
+    padding: 28px 16px 40px;
+    gap: 20px;
+  }
+
+  .hero {
+    gap: 10px;
+  }
+
+  .names {
+    font-size: clamp(28px, 7vw, 40px);
+    line-height: 1;
+  }
+
+  .pass-wrap {
+    width: 100%;
+  }
+
+  .pass-desktop {
+    display: none;
+  }
+
+  .pass-mobile {
+    display: block;
+    width: min(343px, 92vw);
   }
 }
