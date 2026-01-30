@@ -1,15 +1,22 @@
+ "use client";
+
 import { PassCanvas } from "@/components/PassCanvas";
 import { MobilePassFlip } from "@/components/MobilePassFlip";
-
+import { useEffect, useState } from "react";
 export default function Home() {
+  const [name, setName] = useState("");
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const nameParam = urlParams.get("name");
+
+    if (nameParam) setName(nameParam.replace(/\+/g, " ").trim());
+  }, []);
   return (
     <div className="page">
       <header className="hero">
-        <p className="kicker">Pentru</p>
+        {name && <p className="kicker">Pentru</p>}
         <h1 className="names">
-          DANIELA &amp; ION
-          <br className="names-break" />
-          CASIANOV
+          {name}
         </h1>
       </header>
 
